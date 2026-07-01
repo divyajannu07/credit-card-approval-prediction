@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Screen an Applicant &mdash; LedgerScore{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-text">
+    <span class="eyebrow">Automated underwriting</span>
+    <h1>Enter an applicant's<br>financial profile.</h1>
+    <p>LedgerScore evaluates income, employment, and credit history the way an analyst
+       would &mdash; instantly. Currently serving predictions from
+       <strong>{{ model_name }}</strong>, the best performer of four candidate models.</p>
+  </div>
+  <div class="hero-gauge" aria-hidden="true">
+    <svg viewBox="0 0 200 120" class="gauge-preview">
+      <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#26314A" stroke-width="14" stroke-linecap="round"/>
+      <path d="M 20 100 A 80 80 0 0 1 130 27" fill="none" stroke="#2EC4B6" stroke-width="14" stroke-linecap="round"/>
+      <text x="100" y="95" text-anchor="middle" class="gauge-label">READY</text>
+    </svg>
+  </div>
+</section>
+
+<form class="app-form" method="POST" action="/predict">
+
+  <fieldset>
+    <legend><span class="legend-index">01</span> Applicant</legend>
+    <div class="grid-2">
+      <label>Applicant name (optional)
+        <input type="text" name="applicant_name" placeholder="e.g. J. Rao">
+      </label>
+      <label>Gender
+        <select name="gender">
+          <option value="F">Female</option>
+          <option value="M">Male</option>
+        </select>
+      </label>
+      <label>Age (years)
+        <input type="number" name="age" min="18" max="90" value="35" required>
+      </label>
+      <label>Family status
+        <select name="family_status">
+          {% for f in family_statuses %}<option value="{{ f }}">{{ f }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Number of children
+        <input type="number" name="children" min="0" max="10" value="0" required>
+      </label>
+      <label>Family members (total)
+        <input type="number" name="fam_members" min="1" max="12" value="1" required>
+      </label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="legend-index">02</span> Income &amp; Employment</legend>
+    <div class="grid-2">
+      <label>Annual income (&#8377;)
+        <input type="number" name="income" min="0" step="1000" value="450000" required>
+      </label>
+      <label>Income type
+        <select name="income_type">
+          {% for i in income_types %}<option value="{{ i }}">{{ i }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Employment duration (years)
+        <input type="number" name="employed_years" min="0" max="50" step="0.5" value="5" required>
+      </label>
+      <label>Occupation
+        <select name="occupation_type">
+          {% for o in occupation_types %}<option value="{{ o }}">{{ o }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Education level
+        <select name="education_type">
+          {% for e in education_types %}<option value="{{ e }}">{{ e }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Housing type
+        <select name="housing_type">
+          {% for h in housing_types %}<option value="{{ h }}">{{ h }}</option>{% endfor %}
+        </select>
+      </label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="legend-index">03</span> Assets</legend>
+    <div class="grid-2">
+      <label>Owns a car?
+        <select name="own_car"><option value="N">No</option><option value="Y">Yes</option></select>
+      </label>
+      <label>Owns real estate?
+        <select name="own_realty"><option value="Y">Yes</option><option value="N">No</option></select>
+      </label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="legend-index">04</span> Credit History <span class="legend-note">used for compliance risk screening</span></legend>
+    <div class="grid-2">
+      <label>Months past-due on record
+        <input type="number" name="past_due_count" min="0" max="24" value="0" required>
+      </label>
+      <label>Credit inquiries (last 6 months)
+        <input type="number" name="credit_inquiries" min="0" max="20" value="1" required>
+      </label>
+      <label>Existing open loans
+        <input type="number" name="existing_loans" min="0" max="15" value="1" required>
+      </label>
+      <label>Account history (months)
+        <input type="number" name="account_age_months" min="0" max="480" value="24" required>
+      </label>
+    </div>
+    <div class="checks">
+      <label class="check"><input type="checkbox" name="work_phone"> Work phone on file</label>
+      <label class="check"><input type="checkbox" name="phone" checked> Phone on file</label>
+      <label class="check"><input type="checkbox" name="email" checked> Email on file</label>
+    </div>
+  </fieldset>
+
+  <button type="submit" class="submit-btn">Run prediction</button>
+</form>
+
+{% endblock %}

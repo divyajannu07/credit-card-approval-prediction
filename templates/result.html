@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Result &mdash; LedgerScore{% endblock %}
+{% block content %}
+
+<section class="result-wrap">
+  <div class="result-card {{ 'approved' if approved else 'rejected' }}">
+    <span class="eyebrow">{{ applicant_name }}</span>
+    <h1>{{ "Approved" if approved else "Not approved" }}</h1>
+    <p class="verdict-sub">
+      {% if approved %}
+        This profile matches the historical pattern of approved applicants.
+      {% else %}
+        This profile matches the historical pattern of rejected applicants.
+      {% endif %}
+    </p>
+
+    <div class="confidence-gauge">
+      <svg viewBox="0 0 200 120" class="gauge">
+        <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#26314A" stroke-width="16" stroke-linecap="round"/>
+        <path id="gauge-fill" d="M 20 100 A 80 80 0 0 1 180 100" fill="none"
+              stroke="{{ '#2EC4B6' if approved else '#E0577A' }}" stroke-width="16" stroke-linecap="round"
+              stroke-dasharray="251.2" stroke-dashoffset="{{ 251.2 - (251.2 * confidence / 100) }}"/>
+        <text x="100" y="90" text-anchor="middle" class="gauge-number">{{ confidence }}%</text>
+      </svg>
+      <span class="gauge-caption">model confidence &middot; {{ model_name }}</span>
+    </div>
+
+    <a href="/" class="submit-btn secondary">Screen another applicant</a>
+  </div>
+</section>
+
+{% endblock %}

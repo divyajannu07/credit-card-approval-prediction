@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Model Report &mdash; LedgerScore{% endblock %}
+{% block content %}
+
+<section class="about-wrap">
+  <span class="eyebrow">Model report</span>
+  <h1>Four candidates, one deployed.</h1>
+  <p class="verdict-sub">Every model below was trained on the same feature set and evaluated on a held-out
+     test split. <strong>{{ model_name }}</strong> is currently serving predictions in production.</p>
+
+  <table class="metrics-table">
+    <thead>
+      <tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1 Score</th><th>ROC-AUC</th></tr>
+    </thead>
+    <tbody>
+      {% for name, m in metrics.items() %}
+      <tr class="{{ 'active-row' if name == model_name else '' }}">
+        <td>{{ name }}{% if name == model_name %} <span class="tag">deployed</span>{% endif %}</td>
+        <td>{{ m.accuracy }}</td>
+        <td>{{ m.precision }}</td>
+        <td>{{ m.recall }}</td>
+        <td>{{ m.f1_score }}</td>
+        <td>{{ m.roc_auc }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="charts-grid">
+    <figure>
+      <img src="{{ url_for('static', filename='model_comparison.png') }}" alt="Bar chart comparing model accuracy, F1 and ROC-AUC">
+      <figcaption>Accuracy / F1 / ROC-AUC across all four candidate models</figcaption>
+    </figure>
+    <figure>
+      <img src="{{ url_for('static', filename='confusion_matrix.png') }}" alt="Confusion matrix of the deployed model">
+      <figcaption>Confusion matrix &mdash; {{ model_name }} on the test split</figcaption>
+    </figure>
+  </div>
+</section>
+
+{% endblock %}

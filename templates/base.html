@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Credit Card Approval Prediction{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="ledger-line"></div>
+<header class="topbar">
+  <a href="/" class="brand">
+    <span class="brand-mark">CR</span>
+    <span class="brand-name">Ledger<em>Score</em></span>
+  </a>
+  <nav>
+    <a href="/">Screening</a>
+    <a href="/about">Model Report</a>
+  </nav>
+</header>
+<main>
+{% block content %}{% endblock %}
+</main>
+<footer class="sitefoot">
+  <span>Credit Card Approval Prediction &mdash; ML Finance Project</span>
+  <span class="dot">&middot;</span>
+  <span>Logistic Regression &middot; Random Forest &middot; XGBoost &middot; Decision Tree</span>
+</footer>
+</body>
+</html>
